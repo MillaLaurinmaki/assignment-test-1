@@ -39,6 +39,7 @@ function checkCreditCardObject(creditCard) {
  * @returns {boolean}
  */
 function checkPaymentObject(payment) {
+  const num = parseFloat(payment);
   if (payment && typeof payment.sum === "number" && Math.sign(num) === 1) {
     return true;
   }
@@ -57,23 +58,27 @@ async function checkCreditCardValidity(creditCardData) {
     return false;
   }
 
-  const result = await fetch(
-    "https://api.pihi-group.com/cc/check-credit-card",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(creditCardData),
-    }
-  );
+  try {
+    const result = await fetch(
+      "https://api.pihi-group.com/cc/check-credit-card",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(creditCardData),
+      }
+    );
   const json = await result.json();
+  console.log(json);
   if (json.validCard) {
     return true;
   } else {
     return false;
   }
-}
+} catch (err) {
+  console.log("An Error occured", err);
+};
 
 /**
  * Makes a payment with the user's credit card. Returns Promise<boolean>.
