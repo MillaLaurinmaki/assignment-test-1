@@ -46,12 +46,11 @@ describe("objects", () => {
 
   it("check invalid creditCard object", () => {
     const cc1 = {
-      number: "0123456701234522", // invalid length - fixed
+      number: "01234567012345", // invalid length - fixed
       cvc: "123",
     };
     const cc2 = {
       number: "1234567890123456",
-      cvc: "223",
     };
 
     expect(checkCreditCardObject(cc1)).toBe(false);
