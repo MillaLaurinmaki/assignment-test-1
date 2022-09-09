@@ -22,7 +22,8 @@ function checkPersonObject(person) {
 function checkCreditCardObject(creditCard) {
   if (
     creditCard &&
-    creditCard.number.startsWith(!"34" || !"37") &&
+    !creditCard.number.startsWith("34") &&
+    !creditCard.number.startsWith("37") &&
     creditCard.cvc &&
     creditCard.number.length === 16
   ) {
@@ -39,7 +40,7 @@ function checkCreditCardObject(creditCard) {
  * @returns {boolean}
  */
 function checkPaymentObject(payment) {
-  const num = parseFloat(payment);
+  const num = parseFloat(payment.sum);
   if (payment && typeof payment.sum === "number" && Math.sign(num) === 1) {
     return true;
   }
@@ -69,16 +70,16 @@ async function checkCreditCardValidity(creditCardData) {
         body: JSON.stringify(creditCardData),
       }
     );
-  const json = await result.json();
-  console.log(json);
-  if (json.validCard) {
-    return true;
-  } else {
+    const json = await result.json();
+    if (json.validCard) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
     return false;
   }
-} catch (err) {
-  console.log("An Error occured", err);
-};
+}
 
 /**
  * Makes a payment with the user's credit card. Returns Promise<boolean>.
@@ -93,17 +94,21 @@ async function makePayment(creditCardData, paymentData) {
     return false;
   }
 
-  const result = await fetch("https://api.pihi-group.com/cc/make-payment", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ cc: creditCardData, payment: paymentData }),
-  });
-  const json = await result.json();
-  if (json.ok) {
-    return true;
-  } else {
+  try {
+    const result = await fetch("https://api.pihi-group.com/cc/make-payment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cc: creditCardData, payment: paymentData }),
+    });
+    const json = await result.json();
+    if (json.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
     return false;
   }
 }
