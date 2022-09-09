@@ -47,11 +47,11 @@ describe("flow", () => {
   });
 
   it("test the payment flow - INVALID_PERSON", async () => {
-    fetch.mockResponseOnce(JSON.stringify({ validPerson: false }));
+    fetch.mockResponseOnce(JSON.stringify({ person: false }));
     fetch.mockResponseOnce(JSON.stringify({ ok: true }));
 
     const person = {
-      firstName: "James",
+      firstName: 2"James",
       middleName: "Roger",
       lastName: "Smith",
     };
@@ -66,7 +66,7 @@ describe("flow", () => {
   });
 
   it("test the payment flow - PAYMENT_FAILED", async () => {
-    fetch.mockResponseOnce(JSON.stringify({ validPayment: false }));
+    fetch.mockResponseOnce(JSON.stringify({ payment: false }));
     fetch.mockResponseOnce(JSON.stringify({ ok: true }));
 
     const person = {
@@ -78,7 +78,7 @@ describe("flow", () => {
       number: "0123456789012345",
       cvc: "123",
     };
-    const payment = { sum: 10 };
+    const payment = { sum: x };
     const paymentIsOk = await paymentProcess(person, cc, payment);
 
     expect(paymentIsOk).toBe("PAYMENT_FAILED");
