@@ -22,7 +22,7 @@ function checkPersonObject(person) {
 function checkCreditCardObject(creditCard) {
   if (
     creditCard &&
-    creditCard.number.startsWith(!34 || !37) &&
+    creditCard.number.startsWith(!"34" || !"37") &&
     creditCard.cvc &&
     creditCard.number.length === 16
   ) {
@@ -30,7 +30,7 @@ function checkCreditCardObject(creditCard) {
   }
   return false;
 }
-
+//
 /**
  * Returns a boolean (true or false) if payment is a valid object
  * according to the data structures spec sheet.
@@ -39,7 +39,7 @@ function checkCreditCardObject(creditCard) {
  * @returns {boolean}
  */
 function checkPaymentObject(payment) {
-  if (payment && typeof payment.sum === "number") {
+  if (payment && typeof payment.sum === "number" && Math.sign(num) === 1) {
     return true;
   }
   return false;
